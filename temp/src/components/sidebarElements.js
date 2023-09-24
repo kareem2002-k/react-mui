@@ -1,5 +1,4 @@
 import React from 'react';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 
@@ -15,6 +14,7 @@ export const sidebarElements = [
     items: [
       {
         title: 'Customer Information',
+        isOpen: false, // Add an isOpen property to track the open state
         items: [
           {
             title: 'Customer Analysis',
@@ -29,15 +29,14 @@ export const sidebarElements = [
     items: [
       {
         title: 'Customer Information',
+        isOpen: false, // Add an isOpen property to track the open state
         items: [
           {
             title: 'Customer Analysis',
-
           },
           {
             title: 'Customer Department',
           },
-          
         ],
       },
     ],

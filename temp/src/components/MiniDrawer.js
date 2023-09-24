@@ -18,6 +18,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import Menu from '@mui/material/Menu';
 
 const drawerWidth = 340;
 const logoUrl =
@@ -95,11 +96,24 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+function Clicked() {
+  console.log('clicked');
+}
+
 
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const menuId = 'primary-search-account-menu';
+
+
+  const handleSidebarItemClick = (clickedItem) => {
+    console.log(`Clicked item: ${clickedItem.title}`); // Log the clicked item
+    // You can perform any additional actions here
+  };
+
+  
+
 
   const handleProfileMenuOpen = (event) => {};
 
@@ -257,9 +271,14 @@ export default function MiniDrawer() {
         ) : null}
 
         <List>
-          {sidebarElements.map((item) => (
-            <SidebarItem key={item.text} item={item} />
-          ))}
+        {sidebarElements.map((item) => (
+    <SidebarItem 
+      key={item.text} 
+      item={item} 
+      open={open} 
+      onItemClick={handleSidebarItemClick} // Pass the function here
+    />
+  ))}
         </List>
         <Divider />
       </Drawer>

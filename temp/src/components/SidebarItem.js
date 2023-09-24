@@ -13,61 +13,72 @@ function hasChildren(item) {
 }
 
 // SingleLevel Component
-const SingleLevel = ({ item }) => {
+const SingleLevel = ({ item, onItemClick }) => {
+  const handleItemClick = () => {
+    console.log(item.title); // Log the clicked item's title
+    if (onItemClick) {
+      onItemClick(item); // Call the onItemClick function if provided
+    }
+  };
 
   return (
     <ListItem
       button
+      onClick={handleItemClick} // Call handleItemClick on click
       style={{
         marginTop: '8px',
         marginBottom: '8px',
-        paddingLeft: item.icon ? '16px' : '16px', // Adjust padding for levels without icons
-        borderLeft: item.icon ? 'none' : '2px solid #ccc', // Add a border for levels without icons
+        paddingLeft: item.icon ? '16px' : '16px',
+        borderLeft: item.icon ? 'none' : '2px solid #ccc',
       }}
     >
-      {item.icon && <ListItemIcon sx={{
-        color: '#23429C',
-      }}>{item.icon}</ListItemIcon>}
-      {/* Render ListItemIcon only if there's an icon */}
-      <ListItemText primary={item.title} sx={{
-        color: '#23429C',
-        fontWeight: 'bold',
-
-        textTransform: 'uppercase',
-      
-      }} />
+      {item.icon && (
+        <ListItemIcon sx={{ color: '#23429C' }}>{item.icon}</ListItemIcon>
+      )}
+      <ListItemText
+        primary={item.title}
+        sx={{
+          color: '#23429C',
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+        }}
+      />
     </ListItem>
   );
 };
 
 // MultiLevel Component
-const MultiLevel = ({ item }) => {
-  const [open, setOpen] = useState(false);
+const MultiLevel = ({ item, openDrawer, onItemClick }) => {
+  const [open, setOpen] = useState(item.isOpen); // Initialize the open state based on item.isOpen
 
-  const handleClick = () => {
-    setOpen(!open);
-    console.log(item.title); // Log the item's name to the console
+  const handleItemClick = () => {
+    if (openDrawer) {
+      setOpen(!open);
+      console.log(item.title);
+    } 
+    else {
+      console.log('good first issue');
+      onItemClick(item);
+    }
   };
 
   return (
     <>
       <ListItem
         button
-        onClick={handleClick}
+        onClick={handleItemClick}
         style={{
           marginTop: '8px',
           marginBottom: '8px',
-          paddingLeft: item.icon ? '16px' : '24px', // Adjust padding for levels without icons
-          borderLeft: item.icon ? 'none' : '2px solid #ccc', // Add a border for levels without icons
+          paddingLeft: item.icon ? '16px' : '24px',
+          borderLeft: item.icon ? 'none' : '2px solid #ccc',
         }}
       >
-        {item.icon && <ListItemIcon
-          sx={{
-            color: '#23429C',
-          }}
-        >{item.icon}</ListItemIcon>}
-        {/* Render ListItemIcon only if there's an icon */}
-        <ListItemText primary={item.title}
+        {item.icon && (
+          <ListItemIcon sx={{ color: '#23429C' }}>{item.icon}</ListItemIcon>
+        )}
+        <ListItemText
+          primary={item.title}
           sx={{
             color: '#23429C',
             fontSize: '14px',
@@ -78,12 +89,15 @@ const MultiLevel = ({ item }) => {
         {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List 
-         component="div" disablePadding>
+        <List component="div" disablePadding>
           {item.items.map((child, key) => (
-            <SidebarItem key={key} item={child} subItem
-          
-             />
+            <SidebarItem
+              key={key}
+              item={child}
+              subItem
+              open={open}
+              onItemClick={onItemClick}
+            />
           ))}
         </List>
       </Collapse>
@@ -91,22 +105,20 @@ const MultiLevel = ({ item }) => {
   );
 };
 
-
-// MenuItem Component
-const SidebarItem = ({ item, subItem }) => {
+const SidebarItem = ({ item, subItem, open, onItemClick }) => {
   if (!hasChildren(item)) {
     return (
       <div style={{ marginLeft: subItem ? '16px' : '0', marginRight: '16px' }}>
-        <SingleLevel item={item} />
+        <SingleLevel item={item} onItemClick={onItemClick} /> {/* Pass onItemClick here */}
       </div>
     );
   }
 
   return (
     <div style={{ marginLeft: subItem ? '16px' : '0', marginRight: '16px' }}>
-      <MultiLevel item={item} />
+      <MultiLevel item={item} openDrawer={open} onItemClick={onItemClick} /> {/* Pass onItemClick here */}
     </div>
   );
 };
 
-export default SidebarItem; // Export SidebarItem as the default export
+export default SidebarItem;
