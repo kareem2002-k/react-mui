@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -19,6 +19,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const drawerWidth = 340;
 const logoUrl =
@@ -96,26 +97,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-function Clicked() {
-  console.log('clicked');
-}
-
-
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [clickedItem, setClickedItem] = useState(null); // Maintain the clicked item state
   const menuId = 'primary-search-account-menu';
 
-
   const handleSidebarItemClick = (clickedItem) => {
-    console.log(`Clicked item: ${clickedItem.title}`); // Log the clicked item
-    // You can perform any additional actions here
+    setClickedItem(clickedItem); // Set the clicked item in state
   };
 
-  
-
-
-  const handleProfileMenuOpen = (event) => {};
+  const handleProfileMenuOpen = (event) => {
+    // Implement your profile menu logic here
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -123,6 +117,7 @@ export default function MiniDrawer() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+    setClickedItem(null); // Close the menu when the drawer is closed
   };
 
   return (
@@ -271,14 +266,14 @@ export default function MiniDrawer() {
         ) : null}
 
         <List>
-        {sidebarElements.map((item) => (
-    <SidebarItem 
-      key={item.text} 
-      item={item} 
-      open={open} 
-      onItemClick={handleSidebarItemClick} // Pass the function here
-    />
-  ))}
+          {sidebarElements.map((item) => (
+            <SidebarItem
+              key={item.text}
+              item={item}
+              open={open}
+              onItemClick={handleSidebarItemClick} // Pass the function here
+            />
+          ))}
         </List>
         <Divider />
       </Drawer>
@@ -294,6 +289,21 @@ export default function MiniDrawer() {
         <DrawerHeader />
         <Typography paragraph>content</Typography>
       </Box>
+
+      {/* Render a menu for the clicked item */}
+      <Menu
+        open={Boolean(clickedItem)}
+        onClose={() => setClickedItem(null)} // Close the menu when clicking outside
+      >
+        <MenuItem>{clickedItem && clickedItem.title}</MenuItem>
+        {clickedItem &&
+          clickedItem.items &&
+          clickedItem.items.map((subItem, index) => (
+            <MenuItem key={index} onClick={() => {/* Handle sub-item click */}}>
+              {subItem.title}
+            </MenuItem>
+          ))}
+      </Menu>
     </Box>
   );
 }

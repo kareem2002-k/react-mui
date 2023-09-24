@@ -17,9 +17,7 @@ function hasChildren(item) {
 const SingleLevel = ({ item, onItemClick }) => {
   const handleItemClick = () => {
     console.log(item.title); // Log the clicked item's title
-    if (onItemClick) {
-      onItemClick(item); // Call the onItemClick function if provided
-    }
+  
   };
 
   return (
