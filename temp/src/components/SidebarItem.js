@@ -14,6 +14,7 @@ function hasChildren(item) {
 
 // SingleLevel Component
 const SingleLevel = ({ item }) => {
+
   return (
     <ListItem
       button
@@ -45,6 +46,7 @@ const MultiLevel = ({ item }) => {
 
   const handleClick = () => {
     setOpen(!open);
+    console.log(item.title); // Log the item's name to the console
   };
 
   return (
@@ -60,26 +62,28 @@ const MultiLevel = ({ item }) => {
         }}
       >
         {item.icon && <ListItemIcon
-        sx={{
-          color: '#23429C',
-        }}
+          sx={{
+            color: '#23429C',
+          }}
         >{item.icon}</ListItemIcon>}
         {/* Render ListItemIcon only if there's an icon */}
         <ListItemText primary={item.title}
-        sx={{
-          color: '#23429C',
-          fontSize: '14px',
-          lineHeight: '21px',
-          textTransform: 'uppercase',
-        
-        }} 
+          sx={{
+            color: '#23429C',
+            fontSize: '14px',
+            lineHeight: '21px',
+            textTransform: 'uppercase',
+          }}
         />
         {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List 
+         component="div" disablePadding>
           {item.items.map((child, key) => (
-            <SidebarItem key={key} item={child} subItem />
+            <SidebarItem key={key} item={child} subItem
+          
+             />
           ))}
         </List>
       </Collapse>
@@ -90,11 +94,17 @@ const MultiLevel = ({ item }) => {
 
 // MenuItem Component
 const SidebarItem = ({ item, subItem }) => {
-  const Component = hasChildren(item) ? MultiLevel : SingleLevel;
+  if (!hasChildren(item)) {
+    return (
+      <div style={{ marginLeft: subItem ? '16px' : '0', marginRight: '16px' }}>
+        <SingleLevel item={item} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ marginLeft: subItem ? '16px' : '0', marginRight: '16px' }}>
-      <Component item={item} />
+      <MultiLevel item={item} />
     </div>
   );
 };
