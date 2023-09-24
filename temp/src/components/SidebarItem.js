@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useEffect } from 'react';
 
 // Helper function to check if an item has children
 function hasChildren(item) {
@@ -50,6 +51,15 @@ const SingleLevel = ({ item, onItemClick }) => {
 // MultiLevel Component
 const MultiLevel = ({ item, openDrawer, onItemClick }) => {
   const [open, setOpen] = useState(item.isOpen); // Initialize the open state based on item.isOpen
+
+
+
+  useEffect(() => {
+    if (!openDrawer) {
+      setOpen(false);
+    } 
+  }, [openDrawer]);
+
 
   const handleItemClick = () => {
     if (openDrawer) {
