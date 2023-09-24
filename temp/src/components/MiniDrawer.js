@@ -12,17 +12,10 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import SidebarItem from './SidebarItem';
+import { sidebarElements } from './sidebarElements';
 
-const drawerWidth = 240;
+const drawerWidth = 340;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -101,54 +94,6 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const [menuItems, setMenuItems] = React.useState([
-    {
-      text: 'Executive Dashboard',
-      icon: <InboxIcon />,
-      subMenuItems: [],
-    },
-    {
-      text: 'Bioland Promithia',
-      icon: <MailIcon />,
-      subMenuItems: [
-        {
-          text: 'Customer Information',
-          icon: <InboxIcon />,
-          subMenuItems: [
-            {
-              text: 'Customer Analysis',
-              icon: <InboxIcon />,
-              subMenuItems: [],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      text: 'Bioland Energy-PV',
-      icon: <MailIcon />,
-      subMenuItems: [
-        {
-          text: 'Customer Information',
-          icon: <InboxIcon />,
-          subMenuItems: [
-            {
-              text: 'Customer Analysis',
-              icon: <InboxIcon />,
-              subMenuItems: [],
-            },
-          ],
-        },
-      ],
-    },
-  ]);
-
-  const toggleSubMenu = (index) => {
-    const updatedMenuItems = [...menuItems];
-    updatedMenuItems[index].open = !updatedMenuItems[index].open;
-    setMenuItems(updatedMenuItems);
-  };
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -161,7 +106,6 @@ export default function MiniDrawer() {
             edge="start"
             sx={{
               marginRight: 5,
-              marginTop: 1,
               ...(open && { display: 'none' }),
             }}
           >
@@ -179,52 +123,22 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
+
         <List>
-          {menuItems.map((item, index) => (
-            <div key={index}>
-              <ListItem
-                disablePadding
-                onClick={() => toggleSubMenu(index)}
-                sx={{ display: 'block' }}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: 'initial',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                  {item.open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </ListItemButton>
-              </ListItem>
-              <Collapse in={item.open} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {item.subMenuItems.map((subItem, subIndex) => (
-                    <ListItem key={subIndex} disablePadding sx={{ display: 'block' }}>
-                      <ListItemButton
-                        sx={{
-                          minHeight: 48,
-                          justifyContent: 'initial',
-                          px: 4,
-                        }}
-                      >
-                        <ListItemIcon>{subItem.icon}</ListItemIcon>
-                        <ListItemText primary={subItem.text} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            </div>
-          ))}
-        </List>
+  {sidebarElements.map((item) => (
+    <SidebarItem key={item.text} item={item} />
+  ))}
+</List>
+       
         <Divider />
+      
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography paragraph></Typography>
+        <Typography paragraph>
+          content
+        </Typography>
+       
       </Box>
     </Box>
   );

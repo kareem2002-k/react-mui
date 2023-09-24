@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import MiniDrawer from './components/dashboard';
+import MiniDrawer from './components/MiniDrawer';
 
 function App() {
   return (
