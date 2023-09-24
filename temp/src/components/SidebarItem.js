@@ -1,4 +1,3 @@
-// SidebarItem.js
 import React, { useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -16,7 +15,8 @@ function hasChildren(item) {
 // SingleLevel Component
 const SingleLevel = ({ item }) => {
   return (
-    <ListItem button>
+    <ListItem button style={{ marginTop: '8px', marginBottom: '8px' }}>
+      {/* Add top and bottom margins */}
       <ListItemIcon>{item.icon}</ListItemIcon>
       <ListItemText primary={item.title} />
     </ListItem>
@@ -34,7 +34,8 @@ const MultiLevel = ({ item }) => {
 
   return (
     <>
-      <ListItem button onClick={handleClick}>
+      <ListItem button onClick={handleClick} style={{ marginTop: '8px', marginBottom: '8px' }}>
+        {/* Add top and bottom margins */}
         <ListItemIcon>{item.icon}</ListItemIcon>
         <ListItemText primary={item.title} />
         {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -55,7 +56,7 @@ const SidebarItem = ({ item, subItem }) => {
   const Component = hasChildren(item) ? MultiLevel : SingleLevel;
 
   return (
-    <div style={{ marginLeft: subItem ? '16px' : '0' }}>
+    <div style={{ marginLeft: subItem ? '16px' : '0', marginRight: '16px' }}>
       <Component item={item} />
     </div>
   );

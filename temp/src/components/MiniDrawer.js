@@ -14,9 +14,15 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SidebarItem from './SidebarItem';
 import { sidebarElements } from './sidebarElements';
+import SearchIcon from '@mui/icons-material/Search';
 
 const drawerWidth = 340;
+const logoUrl =
+  'https://static.wixstatic.com/media/a53960_056c44d88608445c812b80c40a3e9211~mv2.png/v1/fill/w_424,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Promithia%20%20small%20opt.png';
 
+
+const logoUrl2 = 
+'https://static.wixstatic.com/media/a53960_2cb8b02e4fc740dab1217a7ad4a3cb06~mv2.png/v1/fill/w_214,h_214,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Logo%20PNG%20used%20on%20website.png'
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -32,9 +38,12 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: theme.spacing(10), // Adjust the width when closed
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: theme.spacing(16) + 1, // Adjust the width when closed for larger screens
+  },
+  '& .MuiList-root': {
+    paddingLeft: theme.spacing(1), // Adjust the left padding for list items when closed
   },
 });
 
@@ -62,6 +71,8 @@ const AppBar = styled(MuiAppBar, {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    // Remove box shadow when open
+    boxShadow: 'none',
   }),
 }));
 
@@ -71,6 +82,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     flexShrink: 0,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
+    backgroundColor: '#F9FAFC', // Set the background color
     ...(open && {
       ...openedMixin(theme),
       '& .MuiDrawer-paper': openedMixin(theme),
@@ -81,6 +93,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
   }),
 );
+
 
 export default function MiniDrawer() {
   const theme = useTheme();
@@ -97,7 +110,17 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{
+          backgroundColor: '#F9FAFC',
+          color: '#FFFFFF',
+          width: open ? `calc(100% - ${drawerWidth}px)` : '100%', // Responsive width
+          transition: 'width 0.3s ease-in-out',
+          boxShadow: 'none',
+        }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -109,36 +132,121 @@ export default function MiniDrawer() {
               ...(open && { display: 'none' }),
             }}
           >
-            <MenuIcon />
+            <img
+              src={logoUrl2}
+              alt="Logo"
+              style={{ maxWidth: '50px', maxHeight: '50px' }}
+            />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+          <Typography
+            variant="h6"
+            sx={{
+              color: '#23429C',
+            }}
+          >
+            Bioland Energy - Utility Management portal
           </Typography>
+         
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'left',
+              justifyContent: 'center',
+              width: '90%',
+            }}
+          >
+            <img
+              src={logoUrl}
+              alt="Logo"
+              style={{
+                maxWidth: open ? '250px' : '60px',
+                maxHeight: open ? '110px' : '60px',
+                padding: '10px',
+                display: 'block',
+              }}
+            />
+          </div>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         <Divider />
+{open ? (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '90%',
+      marginTop: '10px',
+      marginBottom: '10px',
+    }}
+  >
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        background: '#F9FAFC',
+        borderRadius: '5px',
+        border: '1px solid #ccc',
+        overflow: 'hidden',
+        marginLeft: '16px',
+      }}
+    >
+      <input
+        type="text"
+        placeholder="Search"
+        style={{
+          flex: 1,
+          padding: '10px',
+          border: 'none',
+          outline: 'none',
+          background: '#F9FAFC',
+        }}
+      />
+      <button
+        style={{
+          background: 'transparent',
+          border: 'none',
+          outline: 'none',
+          padding: '8px 10px',
+          cursor: 'pointer',
+        }}
+      >
+        <SearchIcon />
+      </button>
+    </div>
+    <Divider />
+  </div>
+) : null}
 
         <List>
-  {sidebarElements.map((item) => (
-    <SidebarItem key={item.text} item={item} />
-  ))}
-</List>
-       
+          {sidebarElements.map((item) => (
+            <SidebarItem key={item.text} item={item} />
+          ))}
+        </List>
         <Divider />
-      
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          marginLeft: open ? 0 : `${drawerWidth}px`, // Adjust content margin when closed
+          transition: 'margin 0.3s ease-in-out',
+        }}
+      >
         <DrawerHeader />
-        <Typography paragraph>
-          content
-        </Typography>
-       
+        <Typography paragraph>content</Typography>
       </Box>
     </Box>
   );
