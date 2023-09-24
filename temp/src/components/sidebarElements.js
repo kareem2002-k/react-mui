@@ -1,12 +1,13 @@
 import React from 'react';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import HomeIcon from '@mui/icons-material/Home';
 
 // Define your sidebar elements
 export const sidebarElements = [
   {
     title: 'Executive Dashboard',
-    icon: <InboxIcon />,
+    icon: <HomeIcon />,
   },
   {
     title: 'Bioland Promithia',
@@ -14,11 +15,9 @@ export const sidebarElements = [
     items: [
       {
         title: 'Customer Information',
-        icon: <InboxIcon />,
         items: [
           {
             title: 'Customer Analysis',
-            icon: <InboxIcon />,
           },
         ],
       },
@@ -30,12 +29,15 @@ export const sidebarElements = [
     items: [
       {
         title: 'Customer Information',
-        icon: <InboxIcon />,
         items: [
           {
             title: 'Customer Analysis',
-            icon: <InboxIcon />,
+
           },
+          {
+            title: 'Customer Department',
+          },
+          
         ],
       },
     ],

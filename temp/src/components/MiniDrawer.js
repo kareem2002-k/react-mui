@@ -15,6 +15,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SidebarItem from './SidebarItem';
 import { sidebarElements } from './sidebarElements';
 import SearchIcon from '@mui/icons-material/Search';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from '@mui/material/Badge';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+
 
 const drawerWidth = 340;
 const logoUrl =
@@ -98,6 +103,15 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const menuId = 'primary-search-account-menu';
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -121,33 +135,58 @@ export default function MiniDrawer() {
           boxShadow: 'none',
         }}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <img
-              src={logoUrl2}
-              alt="Logo"
-              style={{ maxWidth: '50px', maxHeight: '50px' }}
-            />
-          </IconButton>
-          <Typography
-            variant="h6"
-            sx={{
-              color: '#23429C',
-            }}
-          >
-            Bioland Energy - Utility Management portal
-          </Typography>
-         
-        </Toolbar>
+    <Toolbar>
+  <IconButton
+    color="inherit"
+    aria-label="open drawer"
+    onClick={handleDrawerOpen}
+    edge="start"
+    sx={{
+      marginRight: 5,
+      ...(open && { display: 'none' }),
+    }}
+  >
+    <img
+      src={logoUrl2}
+      alt="Logo"
+      style={{ maxWidth: '50px', maxHeight: '50px' }}
+    />
+  </IconButton>
+  <Typography
+    variant="h6"
+    sx={{
+      color: '#23429C',
+      display: open ? 'none' : 'block',
+    }}
+  >
+    Bioland Energy - Utility Management portal
+  </Typography>
+  {/* Add these three IconButton elements */}
+  <Box sx={{ marginLeft: 'auto' }}>
+  <IconButton size="large" aria-label="show 4 new mails" sx={{ color: '#23429C' }}>
+  <Badge badgeContent={4} color="error">
+    <MailIcon />
+  </Badge>
+</IconButton>
+<IconButton size="large" aria-label="show 17 new notifications" sx={{ color: '#23429C' }}>
+  <Badge badgeContent={17} color="error">
+    <NotificationsIcon />
+  </Badge>
+</IconButton>
+<IconButton
+  size="large"
+  edge="end"
+  aria-label="account of current user"
+  aria-controls={menuId}
+  aria-haspopup="true"
+  onClick={handleProfileMenuOpen}
+  sx={{ color: '#23429C' }}
+>
+  <AccountCircle />
+</IconButton>
+  </Box>
+</Toolbar>
+
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
