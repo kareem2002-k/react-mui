@@ -68,12 +68,18 @@ const DrawerWrapper = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
     const drawerTheme = useTheme();
 
     return {
+      position: 'fixed', // Set the position to fixed
+      top: 0, // Position it at the top of the viewport
+      height: '100%', // Make it cover the entire viewport height
       width: drawerWidth,
-      flexShrink: 0,
       whiteSpace: 'nowrap',
       boxSizing: 'border-box',
       backgroundColor: drawerTheme.palette.background.default,
-      zIndex: open ? theme.zIndex.drawer : theme.zIndex.drawer - 1, // Increase zIndex when drawer is open
+      zIndex: theme.zIndex.drawer + (open ? 0 : -1), // Increase zIndex when drawer is open
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
       ...(open && {
         ...openedMixin(theme),
         '& .MuiDrawer-paper': openedMixin(theme),
@@ -97,6 +103,7 @@ const DrawerWrapper = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
     };
   },
 );
+
 
 function MyDrawer({ open, handleDrawerClose, handleSidebarItemClick }) {
   const theme = useTheme();
