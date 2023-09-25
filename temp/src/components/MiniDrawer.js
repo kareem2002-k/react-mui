@@ -14,8 +14,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SidebarItem from './SidebarItem';
 import { sidebarElements } from './sidebarElements';
 import SearchIcon from '@mui/icons-material/Search';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Brightness4Icon from '@mui/icons-material/Brightness4'; // Dark theme icon
 import Brightness7Icon from '@mui/icons-material/Brightness7'; // Light theme icon
 
@@ -44,14 +42,14 @@ const logoUrl2 =
   'https://static.wixstatic.com/media/a53960_2cb8b02e4fc740dab1217a7ad4a3cb06~mv2.png/v1/fill/w_214,h_214,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Logo%20PNG%20used%20on%20website.png';
 
   const openedMixin = (theme) => ({
-    width: drawerWidth,
-    height: '100%', // Set the height to 100% when the drawer is open
+    width: drawerWidth , // Make the drawer slightly smaller
+    height: '100vh',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
     overflowX: 'hidden',
-    borderRight: '1px solid grey', // Add border to the right side of the drawer when it's open
+    borderRight: `0.5px solid ${theme.palette.mode === 'light' ? 'grey' : 'white'}`, // Set border color based on theme
   });
   
   const closedMixin = (theme) => ({
@@ -61,14 +59,14 @@ const logoUrl2 =
     }),
     overflowX: 'hidden',
     width: theme.spacing(10),
-    height: '100%', // Set the height to 100% when the drawer is closed
+    height: '100vh',
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(16) + 1,
     },
     '& .MuiList-root': {
       paddingLeft: theme.spacing(1),
     },
-    borderRight: '1px solid grey', // Add border to the right side of the closed drawer
+    borderRight: `0.5px solid ${theme.palette.mode === 'light' ? 'grey' : 'white'}`, // Set border color based on theme
   });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -85,37 +83,37 @@ const AppBar = styled(MuiAppBar, {
   const appBarTheme = useTheme();
 
   return {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + (open ? 0 : 1), // Increase zIndex when drawer is open
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     ...(open && {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth - 20,
+      width: `calc(100% - ${drawerWidth - 20}px)`,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
       boxShadow: 'none',
-      borderLeft: '1px solid grey', // Add border to the left side of the app bar when it's open
     }),
     backgroundColor: appBarTheme.palette.background.paper,
     color: appBarTheme.palette.text.primary,
-    borderBottom: '1px solid grey', // Add border to the right side of the app bar when it's closed
+    borderBottom: `0.5px solid ${appBarTheme.palette.mode === 'light' ? 'grey' : 'white'}`,
   };
 });
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => {
-    const drawerTheme = useTheme(); // Get the theme using useTheme hook
+    const drawerTheme = useTheme();
 
     return {
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
       boxSizing: 'border-box',
-      backgroundColor: drawerTheme.palette.background.default, // Set background color based on theme
+      backgroundColor: drawerTheme.palette.background.default,
+      zIndex: open ? theme.zIndex.drawer : theme.zIndex.drawer - 1, // Increase zIndex when drawer is open
       ...(open && {
         ...openedMixin(theme),
         '& .MuiDrawer-paper': openedMixin(theme),
@@ -127,11 +125,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
       '& .MuiDrawer-paper': {
         position: 'relative',
-        whiteSpace: 'nowrap',
         width: drawerWidth,
         overflowX: 'hidden',
-        backgroundColor: drawerTheme.palette.background.default, // Set background color based on theme
-        color: drawerTheme.palette.text.primary, // Set text color based on theme
+        backgroundColor: drawerTheme.palette.background.default,
+        color: drawerTheme.palette.text.primary,
         transition: theme.transitions.create('width', {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.enteringScreen,
@@ -140,7 +137,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     };
   },
 );
-
 export default function MiniDrawer({toggleTheme}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -176,7 +172,6 @@ export default function MiniDrawer({toggleTheme}) {
         open={open}
         sx={{
           color: '#FFFFFF',
-          width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
           transition: 'width 0.3s ease-in-out',
           boxShadow: 'none',
         }}
@@ -213,7 +208,8 @@ export default function MiniDrawer({toggleTheme}) {
               edge="end"
               aria-label="theme changer"
               onClick={changeTheme}
-              sx={{ color: '#23429C' }}
+              sx={{ color: theme.palette.text.primary}}
+              
             >
               {theme.palette.mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
             </IconButton>
@@ -307,39 +303,41 @@ export default function MiniDrawer({toggleTheme}) {
               item={item}
               open={open}
               onItemClick={handleSidebarItemClick}
+
             />
           ))}
         </List>
-        <Divider />
       </Drawer>
       <Box
         component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          marginLeft: open ? 0 : `${drawerWidth}px`,
-          transition: 'margin 0.3s ease-in-out',
-        }}
+    
       >
-        <DrawerHeader />
+   <DrawerHeader />
+        <Typography paragraph sx={{
+          color: theme.palette.text.primary,
+          marginLeft: '16px',
+          marginTop: '16px',
+          fontSize: '18px',
+        }}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
+          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
+          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
+          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
+          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
+          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
+          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
+          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
+          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
+          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
+          sapien faucibus et molestie ac.
+        </Typography>
+       
       </Box>
 
-      <Typography paragraph>content</Typography>
 
 
-      <Menu
-        open={Boolean(clickedItem)}
-        onClose={() => setClickedItem(null)}
-      >
-        <MenuItem>{clickedItem && clickedItem.title}</MenuItem>
-        {clickedItem &&
-          clickedItem.items &&
-          clickedItem.items.map((subItem, index) => (
-            <MenuItem key={index} onClick={() => {/* Handle sub-item click */}}>
-              {subItem.title}
-            </MenuItem>
-          ))}
-      </Menu>
+     
     </Box>
   );
 }
