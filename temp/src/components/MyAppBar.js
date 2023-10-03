@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import DarkLightIcon from './appBarIcons/LightDarktheme';
 import LanguageToggle from './appBarIcons/LanguageToggle';
 import ProfileIcon from './appBarIcons/ProfileIcon';
+import FullscreenToggleIcon from './appBarIcons/FullScreenToggle';
 
 // Define the missing variables
 const drawerWidth = 340; // You should adjust this value based on your design
@@ -77,14 +78,20 @@ function MyAppBar({ open, handleDrawerOpen, changeTheme }) {
         </Typography>
         <Box
   sx={{
- 
+    display: 'flex',
+    alignItems: 'center',
     marginLeft: 'auto' // Center items vertically
   }}
 >
-  <LanguageToggle sx={{ marginLeft: '16px' }} />
-  <DarkLightIcon changeTheme={changeTheme}  />
-  <ProfileIcon sx={{ marginLeft: '8px' }} />
+<LanguageToggle sx={{ marginRight: '8px' }} />
+
+  <DarkLightIcon changeTheme={changeTheme} sx={{ paddingRight:'8px' }} />
+  <FullscreenToggleIcon/>
+
+  <ProfileIcon sx={{ marginRight: '8px' }} />
+
 </Box>
+
       </Toolbar>
     </AppBarWrapper>
   );

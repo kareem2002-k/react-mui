@@ -32,7 +32,8 @@ function LanguageToggle() {
         aria-haspopup="true"
         onClick={handleMenuOpen}
         color="inherit"
-        sx={{ alignItems: 'center' }}
+        sx={{ alignItems: 'center',
+      marginRight:'8px' }}
       >
         {flagIcon && (
           <img

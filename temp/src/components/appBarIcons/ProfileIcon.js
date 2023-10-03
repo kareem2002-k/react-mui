@@ -36,7 +36,8 @@ function ProfileIcon() {
   onClick={handleMenuOpen}
   sx={{
     color: theme.palette.text.primary,
-    fontSize: '24px', // Adjust the size as needed
+    fontSize: '24px',
+    marginRight:'8px' // Adjust the size as needed
   }}
 >
   <AccountCircleIcon />
