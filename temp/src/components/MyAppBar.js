@@ -5,8 +5,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import DarkLightIcon from './appBarIcons/LightDarktheme';
+import LanguageToggle from './appBarIcons/LanguageToggle';
+import ProfileIcon from './appBarIcons/ProfileIcon';
 
 // Define the missing variables
 const drawerWidth = 340; // You should adjust this value based on your design
@@ -74,21 +75,16 @@ function MyAppBar({ open, handleDrawerOpen, changeTheme }) {
         >
           Bioland Energy - Utility Management portal
         </Typography>
-        <Box sx={{ marginLeft: 'auto' }}>
-          <IconButton
-            size="large"
-            edge="end"
-            aria-label="theme changer"
-            onClick={changeTheme}
-            sx={{ color: theme.palette.text.primary }}
-          >
-            {theme.palette.mode === 'light' ? (
-              <Brightness4Icon />
-            ) : (
-              <Brightness7Icon />
-            )}
-          </IconButton>
-        </Box>
+        <Box
+  sx={{
+ 
+    marginLeft: 'auto' // Center items vertically
+  }}
+>
+  <LanguageToggle sx={{ marginLeft: '16px' }} />
+  <DarkLightIcon changeTheme={changeTheme}  />
+  <ProfileIcon sx={{ marginLeft: '8px' }} />
+</Box>
       </Toolbar>
     </AppBarWrapper>
   );
